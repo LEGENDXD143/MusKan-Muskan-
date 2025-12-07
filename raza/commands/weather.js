@@ -131,4 +131,11 @@ module.exports.handleReaction = async function({ event, api, handleReaction: rea
   message += "≿━━━━༺❀༻━━━━≾";
 
   api.sendMessage(message, event.threadID);
+  
+  // Unsend the old current weather message
+  try {
+    api.unsendMessage(reaction.messageID);
+  } catch (err) {
+    console.error('Failed to unsend old weather message:', err);
+  }
 };
