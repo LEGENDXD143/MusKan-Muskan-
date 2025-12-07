@@ -87,8 +87,7 @@ Type ${config.PREFIX}help for commands`;
           await new Promise(resolve => setTimeout(resolve, 10000));
           try { api.unsendMessage(info.messageID); } catch (e) {}
         }
-      },
-      messageID
+      }
     );
   }
 };
