@@ -78,6 +78,10 @@ module.exports.run = async ({ api, event, args }) => {
                   `❤ **React with heart to view the 3-day forecast.**\n\n≿━━━━༺❀༻━━━━≾`;
 
     api.sendMessage(message, event.threadID, (err, info) => {
+      if (err) return;
+      if (!global.client.handleReaction) {
+        global.client.handleReaction = [];
+      }
       global.client.handleReaction.push({
         name: this.config.name,
         messageID: info.messageID,
@@ -92,7 +96,7 @@ module.exports.run = async ({ api, event, args }) => {
   }
 };
 
-module.exports.handleReaction = async function({ event, api, handleReaction: reaction }) {
+module.exports.handleReaction = async function({ event, api, handleReaction: reaction, Users }) {
   if (event.userID != reaction.author) return;
   if (event.reaction != "❤") return; 
 
