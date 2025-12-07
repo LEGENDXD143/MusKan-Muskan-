@@ -5,27 +5,36 @@ class UsersController {
     this.api = api;
   }
 
+  isValidName(name) {
+    if (!name || name.trim() === '') return false;
+    const lower = name.toLowerCase();
+    if (lower === 'facebook' || lower === 'facebook user' || lower.includes('facebook user')) return false;
+    if (lower === 'unknown' || lower === 'user') return false;
+    return true;
+  }
+
   async getNameUser(userID) {
     try {
       const cached = UsersModel.getName(userID);
-      if (cached && cached !== 'Unknown' && cached !== 'Facebook User' && !cached.toLowerCase().includes('facebook user')) {
+      if (this.isValidName(cached)) {
         return cached;
       }
       
       const info = await this.api.getUserInfo(userID);
       if (info && info[userID]) {
-        let name = info[userID].name;
-        if (name && name !== 'Facebook User' && !name.toLowerCase().includes('facebook user')) {
+        const name = info[userID].name;
+        const firstName = info[userID].firstName;
+        const alternateName = info[userID].alternateName;
+        
+        if (this.isValidName(name)) {
           UsersModel.setName(userID, name);
           return name;
         }
-        const firstName = info[userID].firstName;
-        const alternateName = info[userID].alternateName;
-        if (firstName && firstName !== 'Facebook User') {
+        if (this.isValidName(firstName)) {
           UsersModel.setName(userID, firstName);
           return firstName;
         }
-        if (alternateName && alternateName !== 'Facebook User') {
+        if (this.isValidName(alternateName)) {
           UsersModel.setName(userID, alternateName);
           return alternateName;
         }
@@ -34,7 +43,7 @@ class UsersController {
       return 'User';
     } catch (error) {
       const cached = UsersModel.getName(userID);
-      if (cached && cached !== 'Unknown' && cached !== 'Facebook User') return cached;
+      if (this.isValidName(cached)) return cached;
       return 'User';
     }
   }
@@ -43,15 +52,21 @@ class UsersController {
     try {
       const info = await this.api.getUserInfo(userID);
       if (info && info[userID]) {
-        let name = info[userID].name;
-        if (name && name !== 'Facebook User' && !name.toLowerCase().includes('facebook user')) {
+        const name = info[userID].name;
+        const firstName = info[userID].firstName;
+        const alternateName = info[userID].alternateName;
+        
+        if (this.isValidName(name)) {
           UsersModel.setName(userID, name);
           return name;
         }
-        const firstName = info[userID].firstName;
-        if (firstName && firstName !== 'Facebook User') {
+        if (this.isValidName(firstName)) {
           UsersModel.setName(userID, firstName);
           return firstName;
+        }
+        if (this.isValidName(alternateName)) {
+          UsersModel.setName(userID, alternateName);
+          return alternateName;
         }
       }
       return null;

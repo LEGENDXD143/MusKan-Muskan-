@@ -142,22 +142,31 @@ async function showBotInfo(api, event, client, Users, config) {
     }
   } catch (e) {}
   
-  const message = `==[ ${time} ]==
-${config.BOTNAME} Active!
-─────────────────
-Total Commands: ${client.commands.size}
-Prefix: ${config.PREFIX}
-Latest Command: ${latestFile}
-Uptime: ${hours}h ${minutes}m ${seconds}s
-─────────────────
-Type ${config.PREFIX}help for commands`;
+  const message = `╭─────────────────╮
+│  ${config.BOTNAME || 'RAZA BOT'}  
+├─────────────────┤
+│ 📅 ${time}
+│ 👤 ${userName}
+│ 📊 Commands: ${client.commands.size}
+│ 🔧 Prefix: ${config.PREFIX}
+│ ⏰ Uptime: ${hours}h ${minutes}m ${seconds}s
+│ 📁 Latest: ${latestFile}
+├─────────────────┤
+│ Type ${config.PREFIX}help for commands
+╰─────────────────╯`;
   
-  api.shareContact(message, senderID, threadID, async (err, info) => {
-    if (!err) {
-      await new Promise(resolve => setTimeout(resolve, 15000));
-      api.unsendMessage(info.messageID).catch(() => {});
-    }
-  }, messageID);
+  try {
+    api.shareContact(message, senderID, threadID, async (err, info) => {
+      if (err) {
+        api.sendMessage(message, threadID, messageID);
+      } else if (info) {
+        await new Promise(resolve => setTimeout(resolve, 15000));
+        api.unsendMessage(info.messageID).catch(() => {});
+      }
+    }, messageID);
+  } catch (e) {
+    api.sendMessage(message, threadID, messageID);
+  }
 }
 
 async function showSuggestion(api, event, client, Users, config, commandName) {
@@ -168,7 +177,26 @@ async function showSuggestion(api, event, client, Users, config, commandName) {
   
   const checker = stringSimilarity.findBestMatch(commandName, allCommandNames);
   
-  if (checker.bestMatch.rating < 0.3) return;
+  if (checker.bestMatch.rating < 0.3) {
+    const userName = await Users.getNameUser(senderID);
+    const message = `╭─────────────────╮
+│ ❌ Command Not Found
+├─────────────────┤
+│ 👤 ${userName}
+│ ❓ "${commandName}" not found
+│ 💡 Type ${config.PREFIX}help for commands
+╰─────────────────╯`;
+    try {
+      api.shareContact(message, senderID, threadID, (err, info) => {
+        if (err) {
+          api.sendMessage(message, threadID, messageID);
+        }
+      }, messageID);
+    } catch (e) {
+      api.sendMessage(message, threadID, messageID);
+    }
+    return;
+  }
   
   const userName = await Users.getNameUser(senderID);
   const uptime = process.uptime();
@@ -177,36 +205,29 @@ async function showSuggestion(api, event, client, Users, config, commandName) {
   const seconds = Math.floor(uptime % 60);
   const time = moment().tz('Asia/Karachi').format('hh:mm:ss A || DD/MM/YYYY');
   
-  const commandsFolder = path.join(__dirname, '../../../raza/commands');
-  let latestFile = 'None';
+  const message = `╭─────────────────╮
+│  ${config.BOTNAME || 'RAZA BOT'}  
+├─────────────────┤
+│ 📅 ${time}
+│ 👤 ${userName}
+│ ❓ Did you mean: ${config.PREFIX}${checker.bestMatch.target}?
+│ ⏰ Uptime: ${hours}h ${minutes}m ${seconds}s
+├─────────────────┤
+│ Type ${config.PREFIX}help for commands
+╰─────────────────╯`;
   
   try {
-    const files = fs.readdirSync(commandsFolder);
-    const allFiles = files
-      .filter(file => file.endsWith('.js'))
-      .map(file => ({
-        name: file,
-        time: fs.statSync(path.join(commandsFolder, file)).mtime.getTime()
-      }));
-    
-    if (allFiles.length > 0) {
-      latestFile = allFiles.sort((a, b) => b.time - a.time)[0].name;
-    }
-  } catch (e) {}
-  
-  const message = `==[ ${time} ]==
-${config.BOTNAME} Hello!
-Did you mean: ${config.PREFIX}${checker.bestMatch.target}?
-─────────────────
-Command loaded: ${latestFile}
-Uptime: ${hours}h ${minutes}m ${seconds}s`;
-  
-  api.shareContact(message, senderID, threadID, async (err, info) => {
-    if (!err) {
-      await new Promise(resolve => setTimeout(resolve, 15000));
-      api.unsendMessage(info.messageID).catch(() => {});
-    }
-  }, messageID);
+    api.shareContact(message, senderID, threadID, async (err, info) => {
+      if (err) {
+        api.sendMessage(message, threadID, messageID);
+      } else if (info) {
+        await new Promise(resolve => setTimeout(resolve, 15000));
+        api.unsendMessage(info.messageID).catch(() => {});
+      }
+    }, messageID);
+  } catch (e) {
+    api.sendMessage(message, threadID, messageID);
+  }
 }
 
 module.exports = handleCommand;

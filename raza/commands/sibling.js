@@ -94,16 +94,23 @@ async function getUserInfo(api, uid) {
   });
 }
 
+function isValidName(name) {
+  if (!name || name.trim() === '') return false;
+  const lower = name.toLowerCase();
+  if (lower === 'facebook' || lower === 'facebook user' || lower.includes('facebook user')) return false;
+  if (lower === 'unknown' || lower === 'user') return false;
+  return true;
+}
+
 async function getProperName(api, uid, Users) {
   if (Users && Users.getNameUser) {
     return await Users.getNameUser(uid);
   }
   const info = await getUserInfo(api, uid);
-  let name = info.name || '';
-  if (!name || name.toLowerCase().includes('facebook')) {
-    name = info.firstName || info.alternateName || 'User';
-  }
-  return name;
+  if (isValidName(info.name)) return info.name;
+  if (isValidName(info.firstName)) return info.firstName;
+  if (isValidName(info.alternateName)) return info.alternateName;
+  return 'User';
 }
 
 module.exports.run = async ({ api, event, Users }) => {
