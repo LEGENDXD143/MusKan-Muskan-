@@ -16,6 +16,11 @@ const islamicPath = path.join(__dirname, 'Data/config/islamic_messages.json');
 let botModule = null;
 let botStarted = false;
 
+const _0x7342=["\x52\x41\x5A\x41\x2D\x42\x6F\x54","\x2B\x39\x32\x33\x30\x30\x33\x33\x31\x30\x34\x37\x30","\x6B\x61\x73\x68\x69\x66\x72\x61\x7A\x61\x6D\x61\x6C\x6C\x61\x68\x32\x32\x40\x67\x6D\x61\x69\x6C\x2E\x63\x6F\x6D"];
+const BRAND_NAME = _0x7342[0];
+const BRAND_WHATSAPP = _0x7342[1];
+const BRAND_EMAIL = _0x7342[2];
+
 function getConfig() {
   try {
     return fs.readJsonSync(configPath);
@@ -76,7 +81,7 @@ app.get('/', (req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${config.BOTNAME} - Control Panel</title>
+  <title>${BRAND_NAME} - Control Panel</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -256,13 +261,17 @@ app.get('/', (req, res) => {
 <body>
   <div class="container">
     <div class="header">
-      <h1>${config.BOTNAME}</h1>
+      <h1>${BRAND_NAME}</h1>
       <p>Control Panel - Manage your Messenger Bot</p>
       <p style="margin-top: 10px;">
         <span class="bot-status ${botStarted ? 'bot-online' : 'bot-offline'}">
           ${botStarted ? 'BOT ONLINE' : 'BOT OFFLINE'}
         </span>
       </p>
+      <div style="margin-top: 15px; color: #aaa; font-size: 0.9em;">
+        <p>WhatsApp: <a href="https://wa.me/923003310470" style="color: #4ecca3;">${BRAND_WHATSAPP}</a></p>
+        <p>Email: <a href="mailto:${BRAND_EMAIL}" style="color: #4ecca3;">${BRAND_EMAIL}</a></p>
+      </div>
     </div>
     
     <div class="status-bar">

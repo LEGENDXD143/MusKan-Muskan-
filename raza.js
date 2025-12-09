@@ -311,6 +311,7 @@ function setupSchedulers() {
 }
 
 async function startBot() {
+  logs.banner();
   loadConfig();
   loadIslamicMessages();
   
