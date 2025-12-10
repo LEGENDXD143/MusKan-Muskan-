@@ -16,11 +16,10 @@ module.exports = {
     const { threadID, messageID } = event;
 
     const ownerPics = [
-      'https://i.ibb.co/672Zf20L/99ea4edb30db.jpg',
-      'https://i.ibb.co/bRBZxk9v/20df2c060ec2.jpg',
-      'https://i.ibb.co/gMkf5Dmk/252782e1baf1.jpg',
-      'https://i.ibb.co/PspxZNzh/b247dec7d443.jpg'
-    ];
+      'https://files.catbox.moe/wwjwn6.jpg',
+      'https://files.catbox.moe/39mwbc.jpg',
+      'https://files.catbox.moe/orqn1c.jpeg',
+      '' ];
 
     const randomPic = ownerPics[Math.floor(Math.random() * ownerPics.length)];
 
@@ -29,28 +28,24 @@ module.exports = {
 ║   ✨ 𝐁𝐎𝐓 𝐎𝐖𝐍𝐄𝐑 𝐈𝐍𝐅𝐎 ✨   ║
 ╠═══════════════════════════╣
 ║                           ║
-║  👤 𝐍𝐚𝐦𝐞: 𝙺𝚊𝚎𝚕 𝙳𝚛𝚊𝚟𝚎𝚗𝚣     ║
+║  👤 𝐍𝐚𝐦𝐞: 𝐌 𝐓𝐚𝐥𝐡𝐚         ║
 ║                           ║
 ╠═══════════════════════════╣
-║  📱 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 𝐈𝐧𝐟𝐨:          ║
+║  📱 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 𝐈𝐧𝐟𝐨:           ║
 ║                           ║
 ║  🌐 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤:              ║
-║  facebook.com/kaeldravenz ║
-║                           ║
-║  📲 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩:              ║
-║  wa.me/923422413092       ║
-║                           ║
+║  https://www.facebook.com/broken019876║
 ╠═══════════════════════════╣
-║  🤖 𝐁𝐨𝐭 𝐃𝐞𝐭𝐚𝐢𝐥𝐬:           ║
+║  🤖 𝐁𝐨𝐭 𝐃𝐞𝐭𝐚𝐢𝐥𝐬:            ║
 ║                           ║
-║  📛 Name: ${config.BOTNAME || 'RAZA BOT'}
+║  📛 Name: ${config.BOTNAME || 'Talha bOt'}
 ║  ⚡ Prefix: ${config.PREFIX || '.'}
 ║  💻 Version: 2.0.0        ║
 ║  🛠️ Framework: WS3-FCA    ║
 ║                           ║
-╠═══════════════════════════╣
+╠═════════════════════════╣
 ║  💝 𝙏𝙝𝙖𝙣𝙠 𝙮𝙤𝙪 𝙛𝙤𝙧 𝙪𝙨𝙞𝙣𝙜!  ║
-╚═══════════════════════════╝
+╚═════════════════════════╝
     `.trim();
 
     try {
